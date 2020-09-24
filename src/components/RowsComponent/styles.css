@@ -1,0 +1,10 @@
+.setting_wrap{
+	display: flex;
+	
+}
+.setting_item{
+
+}
+.setting_btn{
+	flex: 1
+}
