@@ -6,14 +6,13 @@ import './styles.css';
 const RowsComponent = (props) => {
 	const { data, saveChange } = props;
 	const [newData, updNewData] = useState(data);
+	
 	const onChange = (val, key) => {
 		updNewData({ ...newData, [_.keys(newData)[key]]: val });
 	}
 
 	const onSave = () => {
-		const oldData = JSON.stringify(data);
-		const newDT = JSON.stringify(newData);
-		if (newDT !== oldData) {
+		if (!_.isEqual(data, newData)) {
 			saveChange(newData);
 		}
 	}
@@ -23,14 +22,12 @@ const RowsComponent = (props) => {
 			<div className={'setting_wrap'}>
 				{
 					_.values(newData).map((item, index) => (
-						<div key={index} className={'setting_item'}>
-							{_.keys(newData)[index] !== 'id' ?
+						<div key={index} >
+							{_.keys(newData)[index] !== 'id' &&
 								<>
-									<label>{_.keys(newData)[index]}</label>
+									<label>{_.keys(newData)[index]}</label><br/>
 									<input defaultValue={item} onChange={(e) => onChange(e.target.value, index)} />
 								</>
-								:
-								null
 							}
 						</div>
 					)

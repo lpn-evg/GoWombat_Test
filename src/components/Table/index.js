@@ -59,6 +59,10 @@ const Table = (props) => {
 	);
 }
 
+Table.defaultProps={
+	data: []
+}
+
 Table.propTypes = {
 	data: PropTypes.array,
 	saveChange: PropTypes.func,

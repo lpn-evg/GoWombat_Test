@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Table from './components/Table';
+import Loader from './components/Loader';
 import { getData, changeData } from './api';
-import './App.css';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -21,9 +21,9 @@ const App = () => {
   }
 
   if (isLoading) {
-    return null
+    return <Loader />
   }
-
+  
   return (
     <div className="App">
       <Table

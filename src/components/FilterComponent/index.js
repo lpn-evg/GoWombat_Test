@@ -4,6 +4,7 @@ import './styles.css';
 
 const FilterComponent = (props) => {
 	const { filterText, onFilter, onClear } = props;
+	
 	return (
 		<>
 			<div className={'filter_wrap'}>
