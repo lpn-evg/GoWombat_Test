@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import Table from './components/Table';
+import { connect } from 'react-redux';
+import { setData } from './redux/actions';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import routes from './router';
 import Loader from './components/Loader';
-import { getData, changeData } from './api';
 
-const App = () => {
-  const [data, setData] = useState([]);
+import { getData } from './api';
+
+
+const App = (props) => {
+  const { setData } = props;
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,24 +19,30 @@ const App = () => {
     });
   }, [0]);
 
-  const saveChange = (obj) => {
-    changeData(obj).then((res) => {
-      setData(res.data.users);
-    });
-  }
-
   if (isLoading) {
     return <Loader />
   }
-  
+
   return (
     <div className="App">
-      <Table
-        data={data}
-        saveChange={saveChange}
-      />
+      <React.StrictMode>
+        <Router>
+          <Switch>
+            <Route exact path="/" render={() => (<Redirect to="/page/1" />)} />
+            {
+              routes.map((route) => {
+                return <Route path={route.url}
+                  component={route.component}
+                  exact={route.exact}
+                  key={route.url}
+                />
+              })
+            }
+          </Switch>
+        </Router>
+      </React.StrictMode>
     </div>
   );
 }
 
-export default App;
+export default connect(null, { setData })(App);

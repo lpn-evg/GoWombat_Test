@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { useParams } from "react-router-dom";
 import DataTable from 'react-data-table-component';
-import RowsComponent from '../RowsComponent';
 import FilterComponent from '../FilterComponent';
+import { urlBuilder } from '../../router';
 
 const Table = (props) => {
-	const { data, saveChange } = props;
+	const { data, history } = props;
 	const [filterText, setFilterText] = useState('');
+	const { page } = useParams();
+
+	const changePage = (val) => {
+		let url = urlBuilder('home', { page: val });
+		history.push({
+			pathname: url
+		});
+	}
 
 	const filteredItems = () => {
 		return data.filter((item) => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()));
@@ -16,6 +25,14 @@ const Table = (props) => {
 		if (filterText) {
 			setFilterText('')
 		}
+	};
+
+	const handleChange = e => {
+		let url = urlBuilder('setting', { id: e.id });
+		history.push({
+			pathname: url,
+			state: { params: e }
+		});
 	};
 
 	const getSubHeaderComponent = () => {
@@ -47,25 +64,22 @@ const Table = (props) => {
 		<DataTable
 			title="GoWombat_Test"
 			columns={columns}
+			onRowClicked={handleChange}
+			pointerOnHover={true}
 			data={filteredItems()}
 			pagination={true}
-			expandableRows={true}
-			expandOnRowClicked={true}
 			subHeader={true}
+			paginationDefaultPage={Number(page)}
+			onChangePage={(e) => changePage(e)}
 			subHeaderComponent={getSubHeaderComponent()}
-			expandableRowsComponent={<RowsComponent saveChange={saveChange} />}
-
 		/>
 	);
 }
 
-Table.defaultProps={
-	data: []
-}
-
-Table.propTypes = {
-	data: PropTypes.array,
-	saveChange: PropTypes.func,
+const mapStateToProps = state => {
+	return {
+		data: state.table.data,
+	}
 };
 
-export default Table;
+export default connect(mapStateToProps, null)(Table);

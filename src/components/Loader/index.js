@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import React from 'react';
 import './styles.css';
 
 const Loader = () => {
