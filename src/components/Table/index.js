@@ -35,6 +35,14 @@ const Table = (props) => {
 		});
 	};
 
+	const checkPage = (page) => {
+		if (Number(page)) {
+			return Number(page);
+		} else {
+			changePage(1);
+		}
+	}
+
 	const getSubHeaderComponent = () => {
 		return (
 			<FilterComponent
@@ -69,7 +77,7 @@ const Table = (props) => {
 			data={filteredItems()}
 			pagination={true}
 			subHeader={true}
-			paginationDefaultPage={Number(page)}
+			paginationDefaultPage={checkPage(page)}
 			onChangePage={(e) => changePage(e)}
 			subHeaderComponent={getSubHeaderComponent()}
 		/>
